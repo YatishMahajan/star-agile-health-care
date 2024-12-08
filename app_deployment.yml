@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: test-app
-          image: your-docker-repository/your-app-image:latest
+          image: yatish03/healthcare-project:latest
           ports:
             - containerPort: 8082
