@@ -1,0 +1,44 @@
+# kubernetes_setup.yml
+---
+- name: Configure Kubernetes Cluster
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Install Kubernetes dependencies (apt)
+      apt:
+        name:
+          - apt-transport-https
+          - curl
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+
+    - name: Disable swap (required for kubeadm)
+      command: swapoff -a
+      ignore_errors: yes
+
+    - name: Initialize Kubernetes Master Node
+      shell: kubeadm init --pod-network-cidr=10.244.0.0/16
+      when: inventory_hostname == 'master'
+
+    - name: Set up kubeconfig for kubectl (on master)
+      command: mkdir -p /home/ubuntu/.kube
+      when: inventory_hostname == 'master'
+
+    - name: Copy Kubernetes config file
+      command: cp /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
+      when: inventory_hostname == 'master'
+
+    - name: Install Flannel CNI Network Plugin
+      command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+      when: inventory_hostname == 'master'
+
+    - name: Join Worker Nodes to Kubernetes Cluster
+      shell: kubeadm join {{ hostvars['master'].ansible_fqdn }}:6443 --token {{ kubeadm_token }} --discovery-token-ca-cert-hash sha256:{{ ca_cert_hash }}
+      when: inventory_hostname != 'master'
