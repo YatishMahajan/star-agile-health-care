@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: healthcare-capstone-container
-        image: yatish03/healthcare-project
+        image: yatish03/healthcare-project:
         ports:
         - containerPort: 8081
 ---
