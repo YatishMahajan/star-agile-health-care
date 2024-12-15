@@ -10,4 +10,4 @@ resource "aws_instance" "Prod_Server" {
   tags = {
     Name = "Prod_Server"
   }
-}
+} }
