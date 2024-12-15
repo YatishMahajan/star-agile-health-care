@@ -1,6 +1,4 @@
 resource "aws_instance" "Prod_Server" {
- AWS_ACCESS_KEY_ID="AKIA6ODU4OOFF4GUJFFV"
- AWS_SECRET_ACCESS_KEY="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"
   ami = "ami-0866a3c8686eaeeba"
   instance_type = "t2.micro"
   associate_public_ip_address = true
