@@ -1,22 +1,11 @@
-# provider.tf
-provider "aws" {
-  region = "us-east-1"
-}
-
-resource "aws_instance" "test_instance" {
-  count         = 2 #(2 workers)
-  ami           = "ami-0e2c8caa4b6378d8c"  # Example AMI, replace with an appropriate AMI for your region
+resource "aws_instance" "Prod_Server" {
+  ami = "ami-0866a3c8686eaeeba"
   instance_type = "t2.micro"
-
-  key_name = "security key2"  # Your existing EC2 key pair name for SSH access
-
+  associate_public_ip_address = true
+  subnet_id = "subnet-02be3ea5944095c7d"
+  vpc_security_group_ids = ["sg-064f39ee2819605a4"]
+  key_name = "security key2"
   tags = {
-    Name = "test-cluster-instance-${count.index}"
+    Name = "Prod_Server"
   }
-
-  security_groups = ["sg-064f39ee2819605a4"]  # Attach default security group
-}
-
-output "instance_public_ips" {
-  value = aws_instance.test_instance[*].public_ip
 }
