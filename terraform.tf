@@ -1,7 +1,7 @@
 provider "aws" {
   region  = "us-east-1"
 resource "aws_instance" "Prod_Server" {
-  ami = "ami-0866a3c8686eaeeba"
+  ami = "ami-0e2c8caa4b6378d8c"
   instance_type = "t2.micro"
   associate_public_ip_address = true
   subnet_id = "subnet-02be3ea5944095c7d"
@@ -10,4 +10,6 @@ resource "aws_instance" "Prod_Server" {
   tags = {
     Name = "Prod_Server"
   }
-} }
+}
+}
+
